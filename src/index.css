@@ -1,0 +1,11 @@
+.alive {
+  border: limegreen 4px solid;
+}
+
+.dead {
+  border: red 4px solid;
+}
+
+.unknown {
+  border: gray 4px solid;
+}
