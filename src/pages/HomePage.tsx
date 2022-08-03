@@ -8,29 +8,19 @@ import {
   LinearProgress,
   Pagination,
 } from "@mui/material";
-import {
-  useGetCharactersQuery,
-  useLazyGetCharacterQuery,
-} from "../store/rickAndMorty/rickAndMorty.api";
+import { useGetCharactersQuery } from "../store/rickAndMorty/rickAndMorty.api";
 import { FilterCharacter } from "../components/FilterCharacters";
-import { ISearch } from "../models/models";
+import { ICharecter, ISearch } from "../models/models";
 import { Characters } from "../components/Characters";
 import { ModalCharacters } from "../components/modalCharacter/ModalCharacter";
 
 export function MainPage() {
   const [search, setSearch] = useState<ISearch>({ page: 1 });
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
+  const [modalCharacterSelect, setModalCharacterSelect] =
+    useState<ICharecter>();
 
   const { isLoading, isError, data } = useGetCharactersQuery({ ...search });
-
-  const [
-    fetchCharacter,
-    {
-      isFetching: areCharacterIsLoading,
-      isError: areCharacterIsError,
-      data: fetchedCharacter,
-    },
-  ] = useLazyGetCharacterQuery();
 
   const handleChange = (_: React.ChangeEvent<unknown>, page: number) => {
     setSearch((preState) => ({ ...preState, page }));
@@ -44,9 +34,9 @@ export function MainPage() {
     setSearch(() => ({ page: 1 }));
   };
 
-  const openModalHandler = (id: number) => {
+  const openModalHandler = (character: ICharecter) => {
+    setModalCharacterSelect(() => character)
     setOpenModal(() => true);
-    fetchCharacter(id);
   };
 
   const closeModalHandler = () => {
@@ -93,17 +83,7 @@ export function MainPage() {
         open={isOpenModal}
         onClose={closeModalHandler}
       >
-        {areCharacterIsLoading ? (
-          <LinearProgress
-            sx={{ position: "fixed", top: 0, left: 0, right: 0 }}
-            color="secondary"
-          />
-        ) : (
-          <ModalCharacters
-            isError={areCharacterIsError}
-            character={fetchedCharacter}
-          />
-        )}
+        <ModalCharacters character={modalCharacterSelect!} />
       </Dialog>
     </Container>
   );

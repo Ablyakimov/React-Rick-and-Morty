@@ -16,13 +16,7 @@ export const rickAndMortyApi = createApi({
       }),
       transformResponse: (response: ServerResponse) => response,
     }),
-    getCharacter: build.query<ICharecter, number>({
-      query: (id: number) => ({
-        url: `character/${id}`,
-      }),
-    }),
   }),
 });
 
-export const { useGetCharactersQuery, useLazyGetCharacterQuery } =
-  rickAndMortyApi;
+export const { useGetCharactersQuery } = rickAndMortyApi;

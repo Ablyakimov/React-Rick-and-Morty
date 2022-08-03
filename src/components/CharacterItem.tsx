@@ -19,7 +19,7 @@ export function CharacterItem({
 }: ICharacterItemProps) {
   return (
     <Card sx={{ maxWidth: 270, maxHeight: 450 }}>
-      <CardActionArea onClick={() => openModalHandler(character.id)}>
+      <CardActionArea onClick={() => openModalHandler(character)}>
         <CardMedia
           component="img"
           image={character.image}
