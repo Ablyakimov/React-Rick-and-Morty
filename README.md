@@ -13,3 +13,5 @@ or
 `yarn start`
 or
 `npm run start`
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://rick-and-morty-app-elfsight.herokuapp.com/)
