@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import {
-  Alert,
-  AlertTitle,
-  CircularProgress,
-  Container,
-  Dialog,
-  LinearProgress,
-  Pagination,
-} from "@mui/material";
+import { Container, Dialog } from "@mui/material";
 import { useGetCharactersQuery } from "../store/rickAndMorty/rickAndMorty.api";
 import { FilterCharacter } from "../components/FilterCharacters";
 import { ICharecter, ISearch } from "../models/models";
-import { Characters } from "../components/Characters";
 import { ModalCharacters } from "../components/modalCharacter/ModalCharacter";
+import CharactersList from "../components/CharactersList";
 
 export function MainPage() {
   const [search, setSearch] = useState<ISearch>({ page: 1 });
@@ -20,63 +12,44 @@ export function MainPage() {
   const [modalCharacterSelect, setModalCharacterSelect] =
     useState<ICharecter>();
 
-  const { isLoading, isError, data } = useGetCharactersQuery({ ...search });
+  const charactersResponse = useGetCharactersQuery({ ...search });
 
-  const handleChange = (_: React.ChangeEvent<unknown>, page: number) => {
+  const changePaginationPage = (
+    _: React.ChangeEvent<unknown>,
+    page: number
+  ): void => {
     setSearch((preState) => ({ ...preState, page }));
   };
 
-  const searchHandler = (search: ISearch) => {
+  const searchHandler = (search: ISearch): void => {
     setSearch(() => ({ ...search, page: 1 }));
   };
 
-  const clearSearchHandler = () => {
+  const clearSearchHandler = (): void => {
     setSearch(() => ({ page: 1 }));
   };
 
-  const openModalHandler = (character: ICharecter) => {
-    setModalCharacterSelect(() => character)
+  const openModalHandler = (character: ICharecter): void => {
+    setModalCharacterSelect(() => character);
     setOpenModal(() => true);
   };
 
-  const closeModalHandler = () => {
+  const closeModalHandler = (): void => {
     setOpenModal(() => false);
   };
 
   return (
-    <Container className="characters">
+    <Container>
       <FilterCharacter
         searchHandler={searchHandler}
         clearSearchHandler={clearSearchHandler}
       />
-      {isError ? (
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          Something went wrong
-        </Alert>
-      ) : (
-        <>
-          {isLoading ? (
-            <CircularProgress
-              size={100}
-              sx={{ display: "flex", margin: "auto" }}
-            />
-          ) : (
-            <Characters
-              openModalHandler={openModalHandler}
-              characters={data?.results!}
-            />
-          )}
-          <Pagination
-            page={search.page}
-            sx={{ pt: 4, pb: 3 }}
-            size="large"
-            count={data?.info.pages}
-            onChange={handleChange}
-          />
-        </>
-      )}
-
+      <CharactersList
+        charactersResponse={charactersResponse}
+        openModalHandler={openModalHandler}
+        search={search}
+        changePaginationPage={changePaginationPage}
+      />
       <Dialog
         sx={{ p: 3 }}
         maxWidth={"md"}

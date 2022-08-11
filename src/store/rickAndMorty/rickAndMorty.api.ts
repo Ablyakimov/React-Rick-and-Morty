@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICharecter, ISearch, ServerResponse } from "../../models/models";
+import { ISearch, ServerResponse } from "../../models/models";
 
 export const rickAndMortyApi = createApi({
   reducerPath: "rickAndMorty/api",

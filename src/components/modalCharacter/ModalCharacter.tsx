@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, DialogContent, Grid, Typography } from "@mui/material";
+import { DialogContent, Grid, Typography } from "@mui/material";
 import { ICharecter } from "../../models/models";
 import { CharacterName } from "./CharacterName";
 
